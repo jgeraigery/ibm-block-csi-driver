@@ -57,11 +57,11 @@ class ControllerServicer(csi_pb2_grpc.ControllerServicer):
         user, password, array_addresses = utils.get_array_connection_info_from_secret(secrets)
 
         source = request.volume_content_source
-        logger.debug("++++++ Source : {}".format(source.__dict__))
-        snapshot_source = source.SnapshotSource
-        logger.debug("++++++ Snapshot source : {}".format(snapshot_source.__dict__))
+        logger.debug("++++++ Source : {}".format(source))
+        snapshot_source = source.snapshot
+        logger.debug("++++++ Snapshot source : {}".format(snapshot_source))
         snapshot_id = snapshot_source.snapshot_id
-        logger.debug("++++++ Snapshot id : {}".format(snapshot_id.__dict__))
+        logger.debug("++++++ Snapshot id : {}".format(snapshot_id))
         logger.debug("++++++ Source type : {}".format(source.type))
 
         pool = request.parameters[config.PARAMETERS_POOL]
