@@ -17,9 +17,12 @@
 package driver
 
 import (
+	"bytes"
 	"context"
 	"fmt"
+	"log"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 	"strings"
@@ -307,7 +310,7 @@ func (d *NodeService) NodePublishVolume(ctx context.Context, req *csi.NodePublis
 	defer goid_info.DeleteAdditionalIDInfo()
 	logger.Debugf(">>>> NodePublishVolume: called with args %+v", *req)
 	defer logger.Debugf("<<<< NodePublishVolume")
-
+	d.discover()
 	err := d.nodePublishVolumeRequestValidation(req)
 	if err != nil {
 		switch err.(type) {
@@ -428,7 +431,7 @@ func (d *NodeService) NodeUnpublishVolume(ctx context.Context, req *csi.NodeUnpu
 	defer goid_info.DeleteAdditionalIDInfo()
 	logger.Debugf(">>>> NodeUnpublishVolume: called with args %+v", *req)
 	defer logger.Debugf("<<<< NodeUnpublishVolume")
-
+	d.discover()
 	if len(volumeID) == 0 {
 		return nil, status.Error(codes.InvalidArgument, "Volume ID not provided")
 	}
@@ -540,4 +543,15 @@ func isValidVolumeCapabilitiesAccessMode(volCaps []*csi.VolumeCapability) bool {
 	}
 
 	return foundAll
+}
+
+func (d *NodeService) discover() {
+	logger.Error("++++++++++++++++++ LOGIN")
+	iscsiPort := "172.18.2.13"
+	cmd := exec.Command("iscsiadm", "-m", "discoverydb", "-t", "st", "-p", iscsiPort, "--discover")
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		logger.Error("++++++++++++++++++++++++++++++ cmd.Run() failed with %s\n", err)
+	}
+	logger.Error("++++++++++++++++++ combined out:\n%s\n", string(out))
 }
