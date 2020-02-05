@@ -549,7 +549,7 @@ func (d *NodeService) discover() {
 	cmd := exec.Command("iscsiadm", "-m", "discoverydb", "-t", "st", "-p", iscsiPort, "--discover")
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		logger.Error("++++++++++++++++++++++++++++++ cmd.Run() failed with %v\n", err)
+		logger.Errorf("++++++++++++++++++++++++++++++ cmd.Run() failed with %v\n", err.Error())
 	}
-	logger.Error("++++++++++++++++++ combined out:\n%v\n", string(out))
+	logger.Errorf("++++++++++++++++++ combined out:\n%v\n", string(out))
 }
