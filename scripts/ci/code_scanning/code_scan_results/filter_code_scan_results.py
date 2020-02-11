@@ -58,7 +58,8 @@ def _remove_inner_fields_dict(inner_dicts, keys_to_remove):
 
 def _remove_fields_dict(code_scan_res, keys_to_remove):
     for key_to_remove in keys_to_remove:
-        del code_scan_res[key_to_remove]
+        if key_to_remove in code_scan_res:
+            del code_scan_res[key_to_remove]
 
 
 def _remove_line_numbers_bandit(inner_dicts):
