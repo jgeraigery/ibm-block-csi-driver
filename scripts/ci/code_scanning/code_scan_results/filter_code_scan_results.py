@@ -43,7 +43,7 @@ def _filter_code_scan_res_bandit(code_scan_res):
 
 def filter_code_scan_res_gosec(code_scan_res):
     _remove_fields_dict(code_scan_res, keys_to_remove=("Golang errors", "Stats"))
-    _remove_inner_fields_dict(code_scan_res["Issues"], keys_to_remove=("cwe", "line"))
+    _remove_inner_fields_dict(code_scan_res["Issues"], keys_to_remove=("cwe", "line", "column"))
 
 
 def _remove_inner_fields_list(code_scan_res, index_to_remove):
