@@ -12,7 +12,6 @@ from controller.controller_server.test_settings import vol_name
 import controller.array_action.errors as array_errors
 import controller.controller_server.errors as controller_errors
 
-from controller.controller_server.config import PARAMETERS_PREFIX
 
 class TestControllerServerPublishVolume(unittest.TestCase):
 
