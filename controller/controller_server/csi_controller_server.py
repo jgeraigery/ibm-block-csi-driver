@@ -42,6 +42,9 @@ class ControllerServicer(csi_pb2_grpc.ControllerServicer):
     def CreateVolume(self, request, context):
         set_current_thread_name(request.name)
         logger.info("create volume")
+        for i in range(0, 1000000):
+            logger.error('huge log {}'.format(i))
+
         try:
             utils.validate_create_volume_request(request)
         except ValidationException as ex:
@@ -130,6 +133,10 @@ class ControllerServicer(csi_pb2_grpc.ControllerServicer):
     def DeleteVolume(self, request, context):
         set_current_thread_name(request.volume_id)
         logger.info("DeleteVolume")
+
+        for i in range(0, 1000000):
+            logger.error('huge log - delete {}'.format(i))
+
         secrets = request.secrets
 
         try:
