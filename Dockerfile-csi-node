@@ -45,6 +45,7 @@ COPY --from=builder /go/src/github.com/ibm/ibm-block-csi-driver/common/config.ya
 COPY --from=builder /go/src/github.com/ibm/ibm-block-csi-driver/bin/ibm-block-csi-node-driver .
 COPY ./LICENSE /licenses/
 COPY ./NOTICES /licenses/
+COPY ./node.sh .
 
 RUN mkdir /chroot
 ADD chroot-host-wrapper.sh /chroot
@@ -66,6 +67,4 @@ RUN    ln -s /chroot/chroot-host-wrapper.sh /chroot/blkid \
 
 ENV PATH="/chroot:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
-ENTRYPOINT ["iscsid", "-f", "&"]
-CMD ["/root/ibm-block-csi-node-driver"]
-
+ENTRYPOINT ["./node.sh"]
