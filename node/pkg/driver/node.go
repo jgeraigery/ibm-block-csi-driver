@@ -99,6 +99,7 @@ func (d *NodeService) NodeStageVolume(ctx context.Context, req *csi.NodeStageVol
 	defer goid_info.DeleteAdditionalIDInfo()
 	logger.Debugf(">>>> NodeStageVolume: called with args %+v", *req)
 	defer logger.Debugf("<<<< NodeStageVolume")
+	d.discover()
 
 	err := d.nodeStageVolumeRequestValidation(req)
 	if err != nil {
@@ -241,6 +242,7 @@ func (d *NodeService) NodeUnstageVolume(ctx context.Context, req *csi.NodeUnstag
 	defer goid_info.DeleteAdditionalIDInfo()
 	logger.Debugf(">>>> NodeUnstageVolume: called with args %+v", *req)
 	defer logger.Debugf("<<<< NodeUnstageVolume")
+	d.discover()
 
 	if len(volumeID) == 0 {
 		logger.Errorf("Volume ID not provided")
