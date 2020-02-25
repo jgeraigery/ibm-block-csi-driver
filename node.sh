@@ -1,5 +1,8 @@
 #! /bin/bash -x
 
+echo "Install iscsid..."
+#yum install -y iscsi-initiator-utils && yum clean all
+
 echo "Starting iscsid..."
 #iscsid -f &
 
