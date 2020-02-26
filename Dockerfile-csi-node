@@ -45,8 +45,8 @@ COPY --from=builder /go/src/github.com/ibm/ibm-block-csi-driver/common/config.ya
 COPY --from=builder /go/src/github.com/ibm/ibm-block-csi-driver/bin/ibm-block-csi-node-driver .
 COPY ./LICENSE /licenses/
 COPY ./NOTICES /licenses/
-COPY ./node.sh .
-RUN chmod 755 ./node.sh
+COPY ./scripts/node.sh .
+RUN chmod 755 ./scripts//node.sh
 
 RUN mkdir /chroot
 ADD chroot-host-wrapper.sh /chroot
@@ -56,7 +56,6 @@ RUN    ln -s /chroot/chroot-host-wrapper.sh /chroot/blkid \
     && ln -s /chroot/chroot-host-wrapper.sh /chroot/iscsiadm \
     && ln -s /chroot/chroot-host-wrapper.sh /chroot/lsblk \
     && ln -s /chroot/chroot-host-wrapper.sh /chroot/lsscsi \
-    && ln -s /chroot/chroot-host-wrapper.sh /chroot/iscsid \
     && ln -s /chroot/chroot-host-wrapper.sh /chroot/mkfs.ext3 \
     && ln -s /chroot/chroot-host-wrapper.sh /chroot/mkfs.ext4 \
     && ln -s /chroot/chroot-host-wrapper.sh /chroot/mkfs.xfs \
