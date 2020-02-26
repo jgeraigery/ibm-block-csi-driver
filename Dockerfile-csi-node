@@ -56,6 +56,7 @@ RUN    ln -s /chroot/chroot-host-wrapper.sh /chroot/blkid \
     && ln -s /chroot/chroot-host-wrapper.sh /chroot/iscsiadm \
     && ln -s /chroot/chroot-host-wrapper.sh /chroot/lsblk \
     && ln -s /chroot/chroot-host-wrapper.sh /chroot/lsscsi \
+    && ln -s /chroot/chroot-host-wrapper.sh /chroot/iscsid \
     && ln -s /chroot/chroot-host-wrapper.sh /chroot/mkfs.ext3 \
     && ln -s /chroot/chroot-host-wrapper.sh /chroot/mkfs.ext4 \
     && ln -s /chroot/chroot-host-wrapper.sh /chroot/mkfs.xfs \
@@ -71,4 +72,4 @@ RUN    ln -s /chroot/chroot-host-wrapper.sh /chroot/blkid \
 
 ENV PATH="/chroot:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
-ENTRYPOINT ["./scripts/node.sh"]
+ENTRYPOINT ["./node.sh"]
