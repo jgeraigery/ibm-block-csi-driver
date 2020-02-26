@@ -46,7 +46,7 @@ COPY --from=builder /go/src/github.com/ibm/ibm-block-csi-driver/bin/ibm-block-cs
 COPY ./LICENSE /licenses/
 COPY ./NOTICES /licenses/
 COPY ./scripts/node.sh .
-RUN chmod 755 ./scripts//node.sh
+RUN chmod 755 ./node.sh
 
 RUN mkdir /chroot
 ADD chroot-host-wrapper.sh /chroot
