@@ -10,5 +10,5 @@ mkdir ${BASELINE_PATH} && cp -r /root/code_scan/${TARGET_NAME}/* ${BASELINE_PATH
 docker build -f ${DOCKERFILE_PATH}/Dockerfile-${TARGET_NAME} -t ${TARGET_NAME} . && \
 docker run -e TARGET_NAME=${TARGET_NAME} --rm -t -v ${OUTPUT_PATH}:/results ${TARGET_NAME}
 
-docker build -f ${DOCKERFILE_PATH}/Dockerfile-csi-code-scan-results -t csi-code-scan-results . && \
-docker run -e TARGET_NAME=${TARGET_NAME} --rm -t -v ${OUTPUT_PATH}:/results -v ${BASELINE_PATH}:/baseline_results csi-code-scan-results
+# docker build -f ${DOCKERFILE_PATH}/Dockerfile-csi-code-scan-results -t csi-code-scan-results . && \
+# docker run -e TARGET_NAME=${TARGET_NAME} --rm -t -v ${OUTPUT_PATH}:/results -v ${BASELINE_PATH}:/baseline_results csi-code-scan-results

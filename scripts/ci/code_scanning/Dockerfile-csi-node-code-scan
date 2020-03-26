@@ -22,4 +22,5 @@ COPY node ./node
 RUN mkdir /results
 RUN go get github.com/securego/gosec/cmd/gosec
 
-ENTRYPOINT ["/bin/sh", "-c", "/go/bin/gosec -fmt=json -no-fail ./... > /results/${TARGET_NAME}.json 2> /results/${TARGET_NAME}.log"]
+# ENTRYPOINT ["/bin/sh", "-c", "/go/bin/gosec -fmt=json -no-fail ./... > /results/${TARGET_NAME}.json 2> /results/${TARGET_NAME}.log"]
+ENTRYPOINT ["/bin/sh", "-c", "/go/bin/gosec -no-fail ./... > /results/${TARGET_NAME}"]

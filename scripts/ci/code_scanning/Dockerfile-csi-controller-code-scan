@@ -21,4 +21,5 @@ RUN mkdir /results
 
 WORKDIR .
 
-ENTRYPOINT ["/bin/sh", "-c", "/usr/local/bin/bandit -r /controller -f json > /results/${TARGET_NAME}.json 2> /results/${TARGET_NAME}.log"]
+# ENTRYPOINT ["/bin/sh", "-c", "/usr/local/bin/bandit -r /controller -f json > /results/${TARGET_NAME}.json 2> /results/${TARGET_NAME}.log"]
+ENTRYPOINT ["/bin/sh", "-c", "/usr/local/bin/bandit -r /controller > /results/${TARGET_NAME}"]
