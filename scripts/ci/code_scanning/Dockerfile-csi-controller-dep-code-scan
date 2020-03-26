@@ -22,4 +22,4 @@ RUN mkdir /results
 WORKDIR .
 
 # ENTRYPOINT ["/bin/sh", "-c", "/usr/local/bin/safety check --json -r /controller/requirements.txt > /results/${TARGET_NAME}.json 2> /results/${TARGET_NAME}.log"]
-ENTRYPOINT ["/bin/sh", "-c", "/usr/local/bin/safety check -r /controller/requirements.txt > /results/${TARGET_NAME}"]
+ENTRYPOINT ["/bin/sh", "-c", "/usr/local/bin/safety check -r /controller/requirements.txt > /results/${TARGET_NAME} 2>&1"]
