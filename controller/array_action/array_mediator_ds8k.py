@@ -10,7 +10,7 @@ from controller.array_action.ds8k_rest_client import RESTClient, scsilun_to_int
 import controller.array_action.errors as array_errors
 from controller.array_action import config
 from controller.array_action.array_action_types import Volume
-
+from xavi import host
 
 logger = get_stdout_logger()
 
@@ -357,8 +357,10 @@ class DS8KArrayMediator(ArrayMediatorAbstract):
 
         try:
             if host_name:
+                logger.debug("Getting the connected fc port wwpns from array - host {}", host_name)
                 fc_ports = self.client.get_ioports_by_host(host_name)
             else:
+                logger.debug("Getting the connected fc port wwpns from array - all")
                 fc_ports = self.client.get_fcports()
 
             wwpns = [p.wwpn for p in fc_ports if p.state == IOPORT_STATUS_ONLINE]
