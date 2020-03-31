@@ -353,11 +353,11 @@ class DS8KArrayMediator(ArrayMediatorAbstract):
         return {}
 
     def get_array_fc_wwns(self, host_name=None):
-        logger.debug("Getting the connected fc port wwpns from array")
+        logger.debug("Getting the connected fc port wwpns of host: {}".format(host_name))
 
         try:
             if host_name:
-                logger.debug("Getting the connected fc port wwpns from array - host {}", host_name)
+                logger.debug("Getting the connected fc port wwpns from array - host {}".format(host_name))
                 fc_ports = self.client.get_ioports_by_host(host_name)
             else:
                 logger.debug("Getting the connected fc port wwpns from array - all")
