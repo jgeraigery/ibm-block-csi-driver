@@ -54,6 +54,26 @@ class ArrayMediator:
         raise NotImplementedError
 
     @abc.abstractmethod
+    def create_volume_from_snapshot(self, vol_name, snap_name):
+        """
+        This function should create a volume from snapshot in the storage system.
+
+        Args:
+            vol_name      : name of the volume to be created in the storage system
+            snap_name     : snapshot name to create from
+
+        Returns:
+            Volume
+
+        Raises:
+            VolumeNotFoundError
+            SnapshotNotFoundError
+            IllegalObjectName
+            PermissionDenied
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def get_snapshot(self, snapshot_name):
         """
         This function return snapshot info about the snapshot.

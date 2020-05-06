@@ -213,6 +213,10 @@ class SVCArrayMediator(ArrayMediator):
             logger.exception(ex)
             raise ex
 
+    def create_volume_from_snapshot(self, name, snap_name):
+        # TODO: will need to implement
+        raise NotImplementedError
+
     def get_snapshot(self, snapshot_name):
         # TODO: will need to implement
         raise NotImplementedError

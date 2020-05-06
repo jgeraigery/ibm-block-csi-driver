@@ -165,6 +165,24 @@ class XIVArrayMediator(ArrayMediator):
             logger.exception(ex)
             raise controller_errors.PermissionDeniedError("create vol : {0}".format(name))
 
+    def create_volume_from_snapshot(self, name, snap_name):
+        try:
+            cli_volume = self.client.cmd.vol_copy(vol_trg=name, vokl_src=snap_name)
+            logger.info("finished creating cli volume : {0} from snapshot {1}".format(cli_volume, snap_name))
+            return self._generate_volume_response(cli_volume)
+        except xcli_errors.IllegalNameForObjectError as ex:
+            logger.exception(ex)
+            raise controller_errors.IllegalObjectName(ex.status)
+        except xcli_errors.SourceVolumeBadNameError as ex:
+            logger.exception(ex)
+            raise controller_errors.SnapshotNotFoundError(name)
+        except xcli_errors.TargetVolumeBadNameError as ex:
+            logger.exception(ex)
+            raise controller_errors.VolumeNotFoundError(name)
+        except xcli_errors.OperationForbiddenForUserCategoryError as ex:
+            logger.exception(ex)
+            raise controller_errors.PermissionDeniedError("create vol : {0}".format(name))
+
     def create_snapshot(self, name, volume_name):
         logger.info("creating snapshot {0} from volume {1}".format(name, volume_name))
 

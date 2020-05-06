@@ -82,6 +82,7 @@ class ControllerServicer(csi_pb2_grpc.ControllerServicer):
                 size = self._get_volume_size(request, array_mediator)
                 try:
                     vol = array_mediator.get_volume(volume_name)
+                    if snapshot_id:
 
                 except controller_errors.VolumeNotFoundError as ex:
                     logger.debug(
