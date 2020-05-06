@@ -64,7 +64,7 @@ class ControllerServicer(csi_pb2_grpc.ControllerServicer):
         logger.debug("++++++ Snapshot source type : {0}".format(type(snapshot_source)))
         snapshot_id = snapshot_source.snapshot_id
         logger.debug("++++++ Snapshot id : {0}".format(snapshot_id))
-        logger.debug("++++++ Source id type : {0}".format(type(snapshot_idxfrs)))
+        logger.debug("++++++ Source id type : {0}".format(type(snapshot_id)))
 
         pool = request.parameters[config.PARAMETERS_POOL]
         capabilities = {
