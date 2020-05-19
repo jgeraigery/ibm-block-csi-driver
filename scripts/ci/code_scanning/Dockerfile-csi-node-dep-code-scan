@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Build stage
-FROM golang as builder
+FROM golang:1.12.6 as builder
 
 WORKDIR /go/src/github.com/ibm/ibm-block-csi-driver
 ENV GO111MODULE=on
@@ -23,7 +23,9 @@ COPY go.mod .
 COPY go.sum .
 RUN go mod vendor
 RUN mkdir /results
-RUN go get github.com/securego/gosec/cmd/gosec
+RUN go get golang.org/dl/go1.10.7
+RUN go1.10.7 download
+RUN go1.10.7 get github.com/securego/gosec/cmd/gosec
 
 WORKDIR vendor
 
