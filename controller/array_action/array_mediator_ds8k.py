@@ -10,7 +10,11 @@ from controller.array_action.ds8k_rest_client import RESTClient, scsilun_to_int
 import controller.array_action.errors as array_errors
 from controller.array_action import config
 from controller.array_action.array_action_types import Volume
+from pyds8k.resources.ds8k.v1.common import attr_names
 
+LOGIN_PORT_WWPN = attr_names.IOPORT_WWPN
+LOGIN_PORT_STATE = attr_names.IOPORT_STATUS
+LOGIN_PORT_STATE_ONLINE = 'online'
 
 logger = get_stdout_logger()
 
@@ -22,7 +26,6 @@ ERROR_CODE_VOLUME_NOT_FOUND_FOR_MAPPING = 'BE586015'
 
 
 MAX_VOLUME_LENGTH = 16
-IOPORT_STATUS_ONLINE = 'online'
 
 
 def parse_version(bundle):
@@ -82,7 +85,7 @@ class DS8KArrayMediator(ArrayMediatorAbstract):
         return 8452
 
     @classproperty
-    def max_vol_name_length(self):
+    def max_volume_name_length(self):
         # the max length is 16 on storage side, it is too short, use shorten_volume_name to workaround it.
         # so 63 here is just a soft limit, to make sure the volume name won't be very long.
         return 63
@@ -95,6 +98,16 @@ class DS8KArrayMediator(ArrayMediatorAbstract):
     def max_connections(self):
         # max for rest api is 128.
         return 50
+
+    @classproperty
+    def max_snapshot_name_length(self):
+        # TODO: CSI-1339
+        pass
+
+    @classproperty
+    def max_snapshot_prefix_length(self):
+        # TODO: CSI-1339
+        pass
 
     @classproperty
     def minimal_volume_size_in_bytes(self):
@@ -290,6 +303,10 @@ class DS8KArrayMediator(ArrayMediatorAbstract):
 
         raise array_errors.VolumeNotFoundError(name)
 
+    def get_volume_name(self, volume_id):
+        # TODO: CSI-1339
+        pass
+
     def get_volume_mappings(self, volume_id):
         logger.debug("Getting volume mappings for volume {}".format(volume_id))
         volume_id = get_volume_id_from_scsi_identifier(volume_id)
@@ -299,7 +316,7 @@ class DS8KArrayMediator(ArrayMediatorAbstract):
                 host_mappings = host.mappings_briefs
                 for mapping in host_mappings:
                     if volume_id == mapping["volume_id"]:
-                        host_name_to_lun_id[host.name] = mapping["lunid"]
+                        host_name_to_lun_id[host.name] = scsilun_to_int(mapping["lunid"])
                         break
             logger.debug("Found volume mappings: {}".format(host_name_to_lun_id))
             return host_name_to_lun_id
@@ -341,7 +358,7 @@ class DS8KArrayMediator(ArrayMediatorAbstract):
                     host_name=host_name,
                     lunid=lunid
                 )
-                logger.debug("Successfully unmapped volume from host.")
+                logger.debug("Successfully unmapped volume from host with lun {}.".format(lunid))
             else:
                 raise array_errors.VolumeNotFoundError(volume_id)
         except exceptions.NotFound:
@@ -349,23 +366,28 @@ class DS8KArrayMediator(ArrayMediatorAbstract):
         except exceptions.ClientException as ex:
             raise array_errors.UnMappingError(volume_id, host_name, ex.details)
 
+    def get_snapshot(self, snapshot_name):
+        # TODO: CSI-1339
+        raise NotImplementedError
+
+    def create_snapshot(self, name, volume_name):
+        # TODO: CSI-1339
+        raise NotImplementedError
+
     def get_iscsi_targets_by_iqn(self):
         return {}
 
     def get_array_fc_wwns(self, host_name=None):
-        logger.debug("Getting the connected fc port wwpns from array")
+        logger.debug("Getting the connected fc port wwpns for host {} from array".format(host_name))
 
-        # remove this line when pyds8k support get_ioports_by_host
-        host_name = None
         try:
-            if host_name:
-                fc_ports = self.client.get_ioports_by_host(host_name)
-            else:
-                fc_ports = self.client.get_fcports()
-
-            wwpns = [p.wwpn for p in fc_ports if p.state == IOPORT_STATUS_ONLINE]
+            host = self.client.get_host(host_name)
+            wwpns = [port[LOGIN_PORT_WWPN] for port in host.login_ports if
+                     port[LOGIN_PORT_STATE] == LOGIN_PORT_STATE_ONLINE]
             logger.debug("Found wwpns: {}".format(wwpns))
             return wwpns
+        except exceptions.NotFound:
+            raise array_errors.HostNotFoundError(host_name)
         except exceptions.ClientException as ex:
             logger.error(
                 "Failed to get array fc wwpn. Reason is: {}".format(ex.details)
